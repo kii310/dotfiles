@@ -1,0 +1,215 @@
+" ファイルを上書きする前にバックアップを作ることを無効化
+set nowritebackup
+set nobackup
+
+" wildmenuオプションを有効(vimバーからファイルを選択できる)
+set wildmenu
+
+"colorscheme moonfly
+colorscheme molokai
+
+" colorscheme daycula の設定
+set termguicolors
+
+"----------------------------------------
+" 検索
+"----------------------------------------
+" 検索するときに大文字小文字を区別しない
+set ignorecase
+
+" 小文字で検索すると大文字と小文字を無視して検索
+set smartcase
+
+" 検索がファイル末尾まで進んだら、ファイル先頭から再び検索
+set wrapscan
+
+" インクリメンタル検索 (検索ワードの最初の文字を入力した時点で検索が開始)
+set incsearch
+
+" 検索結果をハイライト表示
+set hlsearch
+
+" Vimの「%」を拡張する
+source $VIMRUNTIME/macros/matchit.vim
+
+"----------------------------------------
+" 表示設定
+"----------------------------------------
+" 対応する括弧やブレースを表示
+set showmatch matchtime=1
+
+" メッセージ表示欄を2行確保
+set cmdheight=2
+
+" ステータス行を常に表示
+set laststatus=2
+
+" ウィンドウの右下にまだ実行していない入力中のコマンドを表示
+set showcmd
+
+" 省略されずに表示
+set display=lastline
+
+" 行末のスペースを可視化
+set listchars=tab:^\ ,trail:~
+
+" タイトルを表示
+set title
+
+" シンタックスハイライト
+syntax on
+
+" スペルチェック
+"set spell
+
+" 行番号の表示
+set number
+
+" 行番号の色
+highlight LineNr ctermfg=127
+highlight LineNr ctermbg=16
+
+" 背景色
+highlight Normal ctermbg=16
+
+" ヤンクでクリップボードにコピー
+set clipboard=unnamed,autoselect
+
+" カーソルラインの表示
+set cursorline
+
+" カーソルラインの色
+highlight CursorLineNr ctermfg=220
+
+" スワップファイルを作成しない
+set noswapfile
+
+"-------------------------------------
+" タブ & インデント
+"------------------------------------
+" タブの代わりに空白文字を挿入する
+set expandtab
+
+" タブ文字の表示幅
+set tabstop=4
+
+" Vimが挿入するインデントの幅
+set shiftwidth=4
+
+" 行頭の余白内で Tab を打ち込むと、'shiftwidth' の数だけインデントする
+set smarttab
+
+" 改行時に前の行のインデントを継続する
+set autoindent
+
+" 改行時に入力された行の末尾に合わせて次の行のインデントを増減する
+set smartindent
+
+
+" netrw setting
+filetype plugin on
+
+" ヘッダを表示する
+let g:netrw_banner=1
+
+" サイズを(K,M,G)で表示する
+let g:netrw_sizestyle="H"
+
+" 日付フォーマットを yyyy/mm/dd(曜日) hh:mm:ss で表示する
+let g:netrw_timefmt="%Y/%m/%d(%a) %H:%M:%S"
+
+" プレビューウィンドウを垂直分割で表示する
+let g:netrw_preview=1
+
+" 左右分割を右側に開く
+let g:netrw_altv=1
+
+" 表示形式をTreeViewに変更
+let g:netrw_liststyle = 3
+
+" 特殊ファイルのハイライト
+let g:netrw_special_syntax = 1
+
+
+" plugins
+
+call plug#begin()
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+"Plug 'Yggdroot/indentLine'
+
+Plug 'airblade/vim-gitgutter'
+
+"Plug 'hankei6km/ale-linter-actionlint.vim'
+
+Plug 'dense-analysis/ale'
+
+" colorscheme dracula
+Plug 'dracula/vim', { 'name': 'dracula' }
+
+Plug 'pantharshit00/vim-prisma'
+
+Plug 'ghifarit53/daycula-vim' , {'branch' : 'main'}
+
+Plug 'ghifarit53/tokyonight-vim'
+
+Plug 'bluz71/vim-moonfly-colors'
+
+call plug#end()
+
+
+" vim-airline
+
+" タブラインを表示
+let g:airline#extensions#tabline#enabled = 1
+
+" テーマの指定
+let g:airline_theme = 'dark'
+
+" Powerline Fontsを利用
+let g:airline_powerline_fonts = 1
+
+" 0でそのタブで開いてるウィンドウ数、1で左のタブから連番
+let g:airline#extensions#tabline#tab_nr_type = 1
+
+
+" vim-gitgutter
+" let g:gitgutter_highlight_lines = 1
+
+" 150ms で変更の反映
+set updatetime=150
+
+" 記号の色を変更する
+highlight GitGutterAdd ctermfg=green
+highlight GitGutterChange ctermfg=blue
+highlight GitGutterDelete ctermfg=red
+
+" highlight GitGutterAddLine ctermbg=green
+" highlight GitGutterChangeLine ctermbg=blue
+" highlight GitGutterDeleteLine ctermbg=red
+
+highlight SignColumn ctermbg=black
+
+
+" vim ale lint
+" Set this. Airline will handle the rest.
+let g:airline#extensions#ale#enabled = 1
+
+" coc.nvim
+""" <Tab>で候補をナビゲート
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+""" <Tab>で次、<Shift+Tab>で前
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
