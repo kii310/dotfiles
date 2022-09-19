@@ -12,6 +12,13 @@ success_symbol = "[→](bold green)" # "success_symbol"を記号"➜"で"bold gr
 [package]
 disabled = true
 
+[memory_usage]
+format = "$symbol [RAM: ${ram}](bold green) | [SWAP: ${swap}](bold blue) "
+disabled = false
+threshold = -1
+symbol = "🐏"
+style = "bold dimmed green"
+
 [[battery.display]]
 #バッテリーを表示するタイミング、表示する際の文字のスタイル
 threshold = 100
@@ -26,3 +33,18 @@ empty_symbol = "🪫  "
 
 [directory]
 truncation_length = 100
+
+[time]
+format = '[$time]($style) [\(っ* ॑꒳ ॑*\)╮ =͟͟͞͞ 🍵  \(｡ _ _\)｡o○ ｽﾔｧ…](bold white) '
+use_12hr = false
+style = "bold purple"
+disabled = false
+time_format = "%Y/%m/%d %H:%M.%S"
+time_range = "-"
+
+[username]
+style_user = "white bold"
+style_root = "black bold"
+format = "[$user]($style) [ビールのみたい🍺](bold white) "
+disabled = false
+show_always = true
