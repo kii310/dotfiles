@@ -29,6 +29,7 @@ alias grep='grep --color=auto'
 alias history='history 1'
 alias bonsai='bash ~/cmd/bonsai.sh'
 alias od='god'
+alias ts-node='./node_modules/.bin/ts-node'
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
@@ -79,3 +80,22 @@ function peco-select-history() {
 }
 zle -N peco-select-history
 bindkey '^r' peco-select-history
+
+# Go
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+
+# go college
+# export MYSQL_USER=root \
+#     MYSQL_PASSWORD=go-college \
+#     MYSQL_HOST=127.0.0.1 \
+#     MYSQL_PORT=3306 \
+#     MYSQL_DATABASE=go_college_api
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+PATH=/Users/kiichi.satou/.volta/bin:/opt/homebrew/opt/binutils/bin:/Users/kiichi.satou/.pyenv/shims:/Users/kiichi.satou/.pyenv/bin:/opt/homebrew/opt/openjdk/bin:/Users/kiichi.satou/.volta/bin:/opt/homebrew/opt/binutils/bin:/Users/kiichi.satou/.local/share/zinit/polaris/bin:/Users/kiichi.satou/.pyenv/bin:/opt/homebrew/opt/openjdk/bin:/Users/kiichi.satou/.nvm/versions/node/v16.14.2/bin:/Library/Frameworks/Python.framework/Versions/3.10/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/opt/X11/bin:/Users/kiichi.satou/go/bin:/Users/kiichi.satou/go/bin:/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/bin
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"

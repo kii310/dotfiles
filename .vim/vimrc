@@ -5,10 +5,8 @@ set nobackup
 " wildmenuオプションを有効(vimバーからファイルを選択できる)
 set wildmenu
 
-"colorscheme moonfly
 colorscheme molokai
 
-" colorscheme daycula の設定
 set termguicolors
 
 "----------------------------------------
@@ -66,11 +64,11 @@ syntax on
 set number
 
 " 行番号の色
-highlight LineNr ctermfg=127
-highlight LineNr ctermbg=16
+" 淡紅藤
+highlight LineNr ctermfg=170 ctermbg=gray guifg=#e6cde3 guibg=black 
 
 " 背景色
-highlight Normal ctermbg=16
+highlight Normal ctermbg=16 guibg=Black
 
 " ヤンクでクリップボードにコピー
 set clipboard=unnamed,autoselect
@@ -78,8 +76,29 @@ set clipboard=unnamed,autoselect
 " カーソルラインの表示
 set cursorline
 
+" 行番号の隣
+" サイン列
+highlight SignColumn ctermbg=black guibg=Black
+
 " カーソルラインの色
-highlight CursorLineNr ctermfg=220
+" 褐返
+" 翡翠色
+highlight CursorLine guibg=#203744 ctermbg=gray
+highlight CursorLineNr guibg=#203744 ctermbg=gray guifg=#38b48b ctermfg=green
+highlight CursorLineSign guibg=#203744
+
+" 選択範囲
+highlight Visual guibg=#203744
+
+" 分割
+highlight VertSplit guifg=black ctermfg=black
+
+" 分割文字
+set fillchars=vert:\ 
+
+" バッファー以下の空白の行
+set fillchars=eob:\ 
+" default = ~
 
 " スワップファイルを作成しない
 set noswapfile
@@ -94,7 +113,7 @@ set expandtab
 set tabstop=4
 
 " Vimが挿入するインデントの幅
-set shiftwidth=4
+set shiftwidth=2
 
 " 行頭の余白内で Tab を打ち込むと、'shiftwidth' の数だけインデントする
 set smarttab
@@ -106,11 +125,19 @@ set autoindent
 set smartindent
 
 
+" statusline
+set statusline=%F\ %M\ %l/%L
+
+" 青緑
+highlight StatusLine guifg=black guibg=#00a497 ctermfg=black ctermbg=blue
+highlight StatusLineNC guifg=black guibg=#00a497 ctermfg=black ctermbg=blue
+
+
 " netrw setting
 filetype plugin on
 
-" ヘッダを表示する
-let g:netrw_banner=1
+" ヘッダを表示しない
+let g:netrw_banner=0
 
 " サイズを(K,M,G)で表示する
 let g:netrw_sizestyle="H"
@@ -135,69 +162,42 @@ let g:netrw_special_syntax = 1
 
 call plug#begin()
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-"Plug 'Yggdroot/indentLine'
 
 Plug 'airblade/vim-gitgutter'
 
-"Plug 'hankei6km/ale-linter-actionlint.vim'
-
 Plug 'dense-analysis/ale'
-
-" colorscheme dracula
-Plug 'dracula/vim', { 'name': 'dracula' }
 
 Plug 'pantharshit00/vim-prisma'
 
-Plug 'ghifarit53/daycula-vim' , {'branch' : 'main'}
+" markdown viewer
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
-Plug 'ghifarit53/tokyonight-vim'
-
-Plug 'bluz71/vim-moonfly-colors'
+" post install (yarn install | npm install) then load plugin only for editing supported files
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install --frozen-lockfile --production',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 
 call plug#end()
 
-
-" vim-airline
-
-" タブラインを表示
-let g:airline#extensions#tabline#enabled = 1
-
-" テーマの指定
-let g:airline_theme = 'dark'
-
-" Powerline Fontsを利用
-let g:airline_powerline_fonts = 1
-
-" 0でそのタブで開いてるウィンドウ数、1で左のタブから連番
-let g:airline#extensions#tabline#tab_nr_type = 1
-
-
-" vim-gitgutter
-" let g:gitgutter_highlight_lines = 1
 
 " 150ms で変更の反映
 set updatetime=150
 
 " 記号の色を変更する
-highlight GitGutterAdd ctermfg=green
-highlight GitGutterChange ctermfg=blue
-highlight GitGutterDelete ctermfg=red
+" 緑
+" 瑠璃色
+" 濃紅
+highlight GitGutterAdd ctermfg=green guifg=#3eb370
+highlight GitGutterChange ctermfg=blue guifg=#1e50a2
+highlight GitGutterDelete ctermfg=red guifg=#a22041
 
-" highlight GitGutterAddLine ctermbg=green
-" highlight GitGutterChangeLine ctermbg=blue
-" highlight GitGutterDeleteLine ctermbg=red
-
-highlight SignColumn ctermbg=black
-
-
-" vim ale lint
-" Set this. Airline will handle the rest.
-let g:airline#extensions#ale#enabled = 1
+let g:gitgutter_sign_added='増'
+let g:gitgutter_sign_modified='変'
+let g:gitgutter_sign_removed='減'
+let g:gitgutter_sign_removed_first_line='減'
+let g:gitgutter_sign_removed_above_and_below='減'
+let g:gitgutter_sign_modified_removed='変'
 
 " coc.nvim
 """ <Tab>で候補をナビゲート
@@ -213,3 +213,25 @@ inoremap <silent><expr> <Tab>
 """ <Tab>で次、<Shift+Tab>で前
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+
+" カスタム関数の定義
+" function! HighlightCursorGroupForGitGutter()
+"   " カーソル位置のハイライトグループ名を取得
+"   let l:syntaxID = synID(line('.'), col('.'), 1)
+"   let l:syntaxName = synIDattr(l:syntaxID, 'name')
+" 
+"   " 必要に応じて、特定のハイライトグループに対する処理を行う
+"   if l:syntaxName == 'GitGutterAdd'
+"     " ここでハイライトを設定します
+"     highlight GitGutterAdd ctermbg=gray guibg=#20374
+"   " else
+"     " そうでない場合の処理を行う（例えば、元の状態に戻す）
+"     " highlight clear
+"   endif
+" endfunction
+
+" CursorHoldイベントに関数をバインド
+" autocmd CursorHold * call HighlightCursorGroupForGitGutter()
+
+" highlight default link CursorLineSign GitGutterAdd
