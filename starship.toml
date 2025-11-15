@@ -35,29 +35,35 @@ directory.truncation_length = 100
 time.use_12hr = false
 time.style = "bold purple"
 time.disabled = false
-time.time_format = "%Y/%m/%d %H:%M.%S"
+time.time_format = "%F %a %T%.f"
 time.time_range = "-"
+time.format = '[$time]($style)'
 
 # [username]
 username.style_user = "white bold"
 username.style_root = "black bold"
-#format = "[$user]($style) [Shiraz🍷](bold white) " show user name
+# format = "[$user]($style) [Shiraz🍷](bold white) " show user name
 # format = "[Shiraz🍷](bold white) "
 username.disabled = false
 username.show_always = true
 
+# Format = """
+#            _,,....,,_                        |
+#       -''":::::::::::::｀''-､                | ⚡️： $battery
+#       ヽ::::::::::::::::::::::::ヽ           |
+#         |::::::;ノ´￣＼:::::::::::＼_,       | 🕰： $time
+#         |::::ﾉ      ヽ､ヽr-r'"´     ）.:     |
+#       _,.!イ_    _,.ﾍｰｧ'二ﾊ二ヽ､へ,_7..::    | 📂： $directory
+# _..,,-":::::rｰ''7ｺ-‐'"´      ;   ',  ｀ヽ/｀ |
+# "-..,,_r-'ｧ'"´/   /!  ﾊ   ハ   !    iヾ_ﾉ    | 🌱： $git_branch
+#     `!イ´ ,' |  /__,.!/  V  ､!__ﾊ   ,'  ,ゝ  |
+#       `!   !/ﾚi'  \\(ﾋ_\\]        ﾋ_ﾝ ﾚ'i  ﾉ     | yukkuri
+#       ,'   ﾉ    !'"      ,＿__,   "' i .ﾚ'   |    siteittene...
+#     ノﾉ （    ,ﾊ.       ヽ _ﾝ     人!        |
+#   （ ,.ﾍ ,）､    ）＞,､ _____,  ,.イ   ハ    | 🚀： 
+# """
+
 format = """
-           _,,....,,_                        |
-      -''":::::::::::::｀''-､                | ⚡️： $battery
-      ヽ::::::::::::::::::::::::ヽ           |
-        |::::::;ノ´￣＼:::::::::::＼_,       | 🕰： $time
-        |::::ﾉ      ヽ､ヽr-r'"´     ）.:     |
-      _,.!イ_    _,.ﾍｰｧ'二ﾊ二ヽ､へ,_7..::    | 📂： $directory
-_..,,-":::::rｰ''7ｺ-‐'"´      ;   ',  ｀ヽ/｀ |
-"-..,,_r-'ｧ'"´/   /!  ﾊ   ハ   !    iヾ_ﾉ    | 🌱： $git_branch
-    `!イ´ ,' |  /__,.!/  V  ､!__ﾊ   ,'  ,ゝ  |
-      `!   !/ﾚi'  \\(ﾋ_\\]        ﾋ_ﾝ ﾚ'i  ﾉ     | yukkuri
-      ,'   ﾉ    !'"      ,＿__,   "' i .ﾚ'   |    siteittene...
-    ノﾉ （    ,ﾊ.       ヽ _ﾝ     人!        |
-  （ ,.ﾍ ,）､    ）＞,､ _____,  ,.イ   ハ    | 🚀： 
+\\(*´ -`\\)\\(´- `*\\) $directory$git_branch$time
+\\(・ω・\\)ノ 
 """
