@@ -28,12 +28,13 @@ battery.display = [
 # [directory]
 # truncation_length = 100
 directory.truncation_length = 100
+directory.style = "cyan"
 
 # [time]
 # format = '[$time]($style) [\(っ* ॑꒳ ॑*\)╮ =͟͟͞͞ 🍵  \(｡ _ _\)｡o○ ｽﾔｧ…](bold white) '
 # format = '[$time]($style) [ウララララ🐇](bold white) '
 time.use_12hr = false
-time.style = "bold purple"
+time.style = "purple"
 time.disabled = false
 time.time_format = "%F %a %T%.f"
 time.time_range = "-"
@@ -46,6 +47,8 @@ username.style_root = "black bold"
 # format = "[Shiraz🍷](bold white) "
 username.disabled = false
 username.show_always = true
+
+git_branch.style = "green"
 
 # Format = """
 #            _,,....,,_                        |
