@@ -1,0 +1,38 @@
+{
+  "languageserver": {
+    "rust": {
+      "command": "rust-analyzer",
+      "filetypes": ["rust"],
+      "rootPatterns": ["Cargo.toml"]
+    }
+  },
+  "coc.preferences.useQuickfixForLocations": true,
+  "hover.floatConfig": {
+    "focusable": true
+  },
+  "suggest.floatConfig": {
+    "border": true
+  },
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextCurrentLineOnly": false,
+  "suggest.completionItemKindLabels": {
+      "function": "󰊕 function",
+      "variable": " variable",
+      "module": "󰕳 module",
+      "snippet": " snippet",
+      "struct": " struct",
+      "keyword": " keyword",
+      "property": " property",
+      "method": " method",
+      "field": " field",
+      "interface": " interface",
+      "folder": " folder",
+      "file": " file",
+      "class": " class",
+      "constant": " constant"
+  },
+  "diagnostic.infoSign": "",
+  "diagnostic.hintSign": "",
+  "diagnostic.warningSign": "",
+  "diagnostic.errorSign": ""
+}

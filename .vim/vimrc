@@ -27,9 +27,6 @@ set incsearch
 " 検索結果をハイライト表示
 set hlsearch
 
-" Vimの「%」を拡張する
-source $VIMRUNTIME/macros/matchit.vim
-
 "----------------------------------------
 " 表示設定
 "----------------------------------------
@@ -65,10 +62,33 @@ set number
 
 " 行番号の色
 " 淡紅藤
-highlight LineNr ctermfg=170 ctermbg=gray guifg=#e6cde3 guibg=black 
+highlight LineNr ctermfg=170 ctermbg=NONE guifg=#e6cde3 guibg=NONE
 
 " 背景色
-highlight Normal ctermbg=16 guibg=Black
+highlight Normal ctermbg=NONE guibg=NONE
+
+highlight SpecialKey ctermbg=NONE guibg=NONE
+
+"" Tab
+" TabLine		Tab pages line, not active tab page label.
+highlight TabLine term=NONE cterm=NONE ctermbg=NONE guibg=NONE
+
+" TabLineFill	Tab pages line, where there are no labels.
+highlight TabLineFill term=NONE cterm=NONE ctermbg=NONE guibg=NONE
+
+" TabLineSel	Tab pages line, active tab page label.
+highlight TabLineSel ctermbg=NONE guibg=NONE
+
+"" Terminal
+" Terminal	|terminal| window (see |terminal-size-color|).
+highlight Terminal ctermbg=NONE guibg=NONE
+
+" StatusLineTerm	Status line of current window, if it is a |terminal| window.
+highlight StatusLineTerm term=bold cterm=bold ctermfg=blue ctermbg=NONE gui=bold guifg=#00a497 guibg=NONE
+
+" StatusLineTermNC	Status lines of not-current windows that is a
+highlight StatusLineTermNC term=bold cterm=bold ctermfg=blue ctermbg=NONE gui=bold guifg=#00a497 guibg=NONE
+
 
 " ヤンクでクリップボードにコピー
 set clipboard=unnamed,autoselect
@@ -78,7 +98,7 @@ set cursorline
 
 " 行番号の隣
 " サイン列
-highlight SignColumn ctermbg=black guibg=Black
+highlight SignColumn ctermbg=NONE guibg=NONE
 
 " カーソルラインの色
 " 褐返
@@ -91,7 +111,8 @@ highlight CursorLineSign guibg=#203744
 highlight Visual guibg=#203744
 
 " 分割
-highlight VertSplit guifg=black ctermfg=black
+" VertSplit	Column separating vertically split windows.
+highlight VertSplit term=bold cterm=bold ctermbg=NONE guibg=NONE
 
 " 分割文字
 set fillchars=vert:\ 
@@ -129,12 +150,15 @@ set smartindent
 set statusline=%F\ %M\ %l/%L
 
 " 青緑
-highlight StatusLine guifg=black guibg=#00a497 ctermfg=black ctermbg=blue
-highlight StatusLineNC guifg=black guibg=#00a497 ctermfg=black ctermbg=blue
+highlight StatusLine term=bold cterm=bold guifg=#00a497 guibg=NONE ctermfg=blue ctermbg=NONE
+highlight StatusLineNC term=bold cterm=bold guifg=#00a497 guibg=NONE ctermfg=blue ctermbg=NONE
 
+" 削除
+set backspace=indent,eol,start
 
 " netrw setting
 filetype plugin on
+filetype plugin indent on
 
 " ヘッダを表示しない
 let g:netrw_banner=0
@@ -149,7 +173,7 @@ let g:netrw_timefmt="%Y/%m/%d(%a) %H:%M:%S"
 let g:netrw_preview=1
 
 " 左右分割を右側に開く
-let g:netrw_altv=1
+" let g:netrw_altv=1
 
 " 表示形式をTreeViewに変更
 let g:netrw_liststyle = 3
@@ -166,17 +190,9 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'airblade/vim-gitgutter'
 
-Plug 'dense-analysis/ale'
-
 Plug 'pantharshit00/vim-prisma'
 
-" markdown viewer
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
-
-" post install (yarn install | npm install) then load plugin only for editing supported files
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install --frozen-lockfile --production',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
+Plug 'rust-lang/rust.vim'
 
 call plug#end()
 
@@ -200,38 +216,30 @@ let g:gitgutter_sign_removed_above_and_below='減'
 let g:gitgutter_sign_modified_removed='変'
 
 " coc.nvim
-""" <Tab>で候補をナビゲート
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~ '\s'
+let g:coc_global_extensions = [
+  \ 'coc-json',
+  \ 'coc-tsserver',
+  \ 'coc-rust-analyzer',
+  \ 'coc-phpls'
+\ ]
+let g:coc_default_semantic_highlight_groups = 1
+
+" GoTo code navigation
+nmap <nowait> gd <Plug>(coc-definition)
+nmap <nowait> gy <Plug>(coc-type-definition)
+nmap <nowait> gi <Plug>(coc-implementation)
+nmap <nowait> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
 endfunction
 
-inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
-""" <Tab>で次、<Shift+Tab>で前
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-
-" カスタム関数の定義
-" function! HighlightCursorGroupForGitGutter()
-"   " カーソル位置のハイライトグループ名を取得
-"   let l:syntaxID = synID(line('.'), col('.'), 1)
-"   let l:syntaxName = synIDattr(l:syntaxID, 'name')
-" 
-"   " 必要に応じて、特定のハイライトグループに対する処理を行う
-"   if l:syntaxName == 'GitGutterAdd'
-"     " ここでハイライトを設定します
-"     highlight GitGutterAdd ctermbg=gray guibg=#20374
-"   " else
-"     " そうでない場合の処理を行う（例えば、元の状態に戻す）
-"     " highlight clear
-"   endif
-" endfunction
-
-" CursorHoldイベントに関数をバインド
-" autocmd CursorHold * call HighlightCursorGroupForGitGutter()
-
-" highlight default link CursorLineSign GitGutterAdd
+" Highlight the symbol and its references when holding the cursor
+autocmd CursorHold * silent call CocActionAsync('highlight')
