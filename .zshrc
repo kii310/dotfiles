@@ -1,5 +1,3 @@
-eval "$(starship init zsh)"
-
 export LANG="en_US.UTF-8"
 export LC_COLLATE="en_US.UTF-8"
 export LC_CTYPE="en_US.UTF-8"
@@ -18,3 +16,7 @@ alias g++='/opt/homebrew/bin/g++-15'
 
 autoload -U compinit
 compinit
+
+eval "$(starship init zsh)"
+
+export GPG_TTY=$(tty)
