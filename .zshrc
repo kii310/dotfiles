@@ -75,6 +75,14 @@ zmodload -i zsh/complist
 # zstyle の設定を初期化する方法: zstyle -d
 # zstyle の有効な設定を確認する方法: zstyle -L
 # zle のウィジェットを一覧表示する方法: zle -al
+## zshoptions
+# setopt で zshoption を設定可能
+# zshoptions を確認する方法: man zshoptions
+# zshoptions の有効な設定を確認する方法: setopt
+## マニュアル
+# zle: man zshzle
+# zshoptions: man zshoptions
+# zshmodules: man zshmodules
 ## 更新手順
 # 1. vim ~/.zshrc
 # 2. zstyle -d
@@ -85,9 +93,11 @@ zmodload -i zsh/complist
 zstyle ':completion:*' completer _complete _ignored
 # zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history _ignored
 
+## 入力による逐次絞り込み
+# zstyle ':completion:*' menu search
+
 ## 選択可能（<C-n>, <C-p>, <C-b>, <C-f> で移動）
-# zstyle ':completion:*' menu select
-zstyle ':completion:*' menu true select
+zstyle ':completion:*' menu select
 zstyle ':completion:*' list-prompt '%M matches'
 ## なぜか効かない
 # zstyle ':completion:*' select-prompt '%M matches'
@@ -121,8 +131,8 @@ bindkey '^[p' history-beginning-search-forward
 # - sp 候補単語間の空白
 # - =<pattern> <pattern>にマッチする候補
 zstyle ':completion:*' list-colors di=$'{\e[36;1' ex=33
-# zstyle ':completion:*:default' list-colors di=$'{\e[36;1' ex=33
 
+## setopt (zshoptions)
 # setopt auto_param_slash      # ディレクトリ名の補完で末尾の / を自動的に付加し、次の補完に備える
 # setopt mark_dirs             # ファイル名の展開でディレクトリにマッチした場合 末尾に / を付加
 # setopt list_types            # 補完候補一覧でファイルの種別を識別マーク表示 (訳注:ls -F の記号)
@@ -138,6 +148,42 @@ zstyle ':completion:*' list-colors di=$'{\e[36;1' ex=33
 # setopt extended_glob         # 拡張グロブで補完(~とか^とか。例えばless *.txt~memo.txt ならmemo.txt 以外の *.txt にマッチ)
 # setopt globdots              # 明確なドットの指定なしで.から始まるファイルをマッチ
 
+## emacs キーバインド (default)
+bindkey -e
+## vi キーバインド
+# bindkey -v
+
+
+# プロンプト
+setopt prompt_subst
+## 色
+# C_DIR='%F{#38B48B}'     # 翡翠色
+# C_DIR='%F{#316745}'     # 千歳緑
+C_DIR='%F{#007B43}'     # 常磐色
+C_ROOT='%F{#E2041B}'    # 猩々緋
+# C_DATE='%F{#884898}'    # 紫
+# C_DATE='%F{#EAF4FC}'    # 月白
+C_DATE='%F{#316745}'    # 千歳緑
+# C_DATE='%F{#007B43}'    # 常磐色
+# C_TIME='%F{#F7B977}'    # 杏色
+# C_TIME='%F{#007B43}'    # 常磐色
+C_TIME='%F{#38B48B}'    # 翡翠色
+# C_GIT='%F{#2CA9E1}'     # 天色
+# C_GIT='%F{#00552E}'     # 深緑
+C_GIT='%F{#19448E}'     # 瑠璃紺
+C_CHR='%F{#E6CDE3}'     # 淡紅藤
+C_RESET='%F{#ffffff}'   # 白
+
+PROMPT_DIR='$(p=$(git rev-parse --show-toplevel 2>/dev/null); c=$(print -P -r -- %d); [[ -n $p ]] && { r=$(basename $p); print -r -- ${c/$p/$r} } || print -P -r -- %~)'
+PROMPT_USER_TYPE=$'%(#. ROOT.)'
+PROMPT_DATE=$'%D{%Y-%m-%d(%a)}'
+PROMPT_TIME=$'%D{%H:%M:%S.%6.}'
+PROMPT_GIT_BRANCH='$(b=$(git symbolic-ref --quiet --short HEAD 2>/dev/null); [[ -n $b ]] && print -r -- "  $b")'
+PROMPT=$'\n'\
+"${C_DIR} ${PROMPT_DIR}${C_ROOT}${PROMPT_USER_TYPE} ${C_DATE}${PROMPT_DATE} ${C_TIME}${PROMPT_TIME}${C_GIT}${PROMPT_GIT_BRANCH}"\
+$'\n'\
+"${C_CHR}>> "
+
 
 # history
 export HISTSIZE=100000
@@ -147,10 +193,6 @@ export SAVEHIST=100000
 # 履歴をインクリメンタルに追加
 #csetopt inc_append_history
 alias history='history -i 1'
-
-# starship
-eval "$(starship init zsh)"
-export STARSHIP_CONFIG=~/dotfiles/starship.toml
 
 export GPG_TTY=$(tty)
 
