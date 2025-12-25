@@ -197,3 +197,10 @@ alias history='history -i 1'
 export GPG_TTY=$(tty)
 
 source ~/.safe-chain/scripts/init-posix.sh # Safe-chain Zsh initialization script
+
+## セッション開始時に OS 情報表示
+# NOTE: install
+# brew install fastfetch
+if [[ -o interactive && -z "$VIM" ]] && command -v fastfetch >/dev/null 2>&1; then
+  fastfetch
+fi
