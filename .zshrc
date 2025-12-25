@@ -180,9 +180,9 @@ PROMPT_DATE=$'%D{%Y-%m-%d(%a)}'
 PROMPT_TIME=$'%D{%H:%M:%S.%6.}'
 PROMPT_GIT_BRANCH='$(b=$(git symbolic-ref --quiet --short HEAD 2>/dev/null); [[ -n $b ]] && print -r -- "  $b")'
 PROMPT=$'\n'\
-"${C_DIR} ${PROMPT_DIR}${C_ROOT}${PROMPT_USER_TYPE} ${C_DATE}${PROMPT_DATE} ${C_TIME}${PROMPT_TIME}${C_GIT}${PROMPT_GIT_BRANCH}"\
+"${C_CHR}"'(*´ -\`)(´- \`*) '"${C_DIR} ${PROMPT_DIR}${C_ROOT}${PROMPT_USER_TYPE} ${C_DATE}${PROMPT_DATE} ${C_TIME}${PROMPT_TIME}${C_GIT}${PROMPT_GIT_BRANCH}"\
 $'\n'\
-"${C_CHR}>> "
+"${C_CHR}"'(・ω・)'" >> "
 
 
 # history
